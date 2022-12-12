@@ -14,9 +14,9 @@ locals {
 }
 
 resource "aws_vpc_endpoint" "datadog" {
-  for_each = { for svc in var.services : svc => local.services[svc] if var.services[svc].enabled }
+  for_each = { for key, svc in var.services : key => svc if svc.enabled }
 
-  service_name        = each.value
+  service_name        = local.services[each.key]
   vpc_endpoint_type   = "Interface"
   private_dns_enabled = true
 
